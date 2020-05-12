@@ -2,7 +2,7 @@ const fieldSize=10;
 const shipModels=[4,3,2,1]
 let fleet=[]
 
-const createShip=(lengthShip)=>{
+ const createShip=(lengthShip)=>{
     let direction=Math.floor(Math.random()*2)
     let row,column;
     let ship=[];
@@ -22,7 +22,7 @@ const createShip=(lengthShip)=>{
     }return ship;
 }
 
-const createFleet=()=>{ 
+export const createFleet=()=>{ 
     for (let i=0;i<shipModels.length;i++){
         for(let j=0;j<i+1;j++){
             let ship; 
@@ -67,5 +67,37 @@ const invPos=(pos)=>{
 return false;
 }
 
-export default createFleet;
+///////////////GAME PROCESS
+
+export const clearFleet=()=>{
+    fleet=[]; hit=[]; miss=[];
+}
+
+let hit = [], miss=[];
+
+export const checkShoots = (cell)=>{
+   if(fleet.length>0){
+    if(fleet.flat().includes(cell)){
+                if(!hit.includes(cell)){
+                    hit.push(cell)
+                        if(hit.length<fleet.flat().length){
+                            return{type:"HIT", payload:cell}
+                        }else{
+                            fleet=[];hit=[]; miss=[];
+                            return {type:"WIN", payload:cell}}
+                
+                }else{return {type:"MESSAGE", payload:"he was already shoot"}}
+    
+        }else{  
+                if(!miss.includes(cell)){
+                    miss.push(cell)
+                    return{type:"MISS", payload:cell}
+                }else{
+                    return {type:"MESSAGE", payload:"there’s still nothing there"}}
+            }
+        }else{
+            return {type:"MESSAGE", payload:"press on start"}}
+}
+
+
 

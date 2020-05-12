@@ -1,4 +1,6 @@
-
+body{
+    background-color: rgb(30, 111, 114);
+}
 .container{
     padding: 0;
     margin: 0 auto;
@@ -14,19 +16,22 @@ table{
 tbody{
     width: 500px;
     height: 500px;
-    border: 1px solid red;
 }
  tr{
-      border: 1px solid red;
       width: 50px;
       height: 50px;
 }
 
 td{
-    border: 1px solid red;
+    border: 1px solid white;
     width: 50px;
     height: 50px;
 }
-.ship{
+.hit{
+    transition: all 1s ease;
+    background-color: red;
+}
+.miss{
+    transition: all 1s ease; 
     background-color: blue;
 }
