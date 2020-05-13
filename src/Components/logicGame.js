@@ -70,34 +70,44 @@ return false;
 ///////////////GAME PROCESS
 
 export const clearFleet=()=>{
-    fleet=[]; hit=[]; miss=[];
+   fleet=[]; wound=[]; destroyed=[];
 }
 
-let hit = [], miss=[];
+let destroyed = [], miss=[], wound=[];
 
-export const checkShoots = (cell)=>{
-   if(fleet.length>0){
-    if(fleet.flat().includes(cell)){
-                if(!hit.includes(cell)){
-                    hit.push(cell)
-                        if(hit.length<fleet.flat().length){
-                            return{type:"HIT", payload:cell}
-                        }else{
-                            fleet=[];hit=[]; miss=[];
-                            return {type:"WIN", payload:cell}}
-                
-                }else{return {type:"MESSAGE", payload:"he was already shoot"}}
-    
-        }else{  
-                if(!miss.includes(cell)){
-                    miss.push(cell)
-                    return{type:"MISS", payload:cell}
+ export const checkShoots = (cell)=>{
+     if(fleet.flat().includes(cell)){
+    for (let i=0; i<fleet.length;i++)
+        for( let j = 0; j < fleet[i].length; j++ ){
+            if(fleet[i][j]===cell){//проверка на попадение
+                if(destroyed.includes(cell) || wound.includes(cell)){//проверка на повторные ходы
+                    return{type:"MESSAGE", payload:"two deaths do not happen"}
                 }else{
-                    return {type:"MESSAGE", payload:"there’s still nothing there"}}
-            }
-        }else{
-            return {type:"MESSAGE", payload:"press on start"}}
-}
+                wound.push(cell)
 
+                if(fleet[i].every(checkdestroyed)){//проверка на то что корабль полностью разрушен
+                    destroyed=[...destroyed, ...fleet[i]]
+                        if(destroyed.length===fleet.flat().length){//проверка на выигрыш
+                           return{type:"WIN", payload:destroyed} 
+                        }
+                    return {type:"DESTROYED", payload:destroyed}
+                }
+                else{
+                    return{type:"WOUND", payload:wound}
+                }
+            }
+         }
+    }
+    }else{
+        if(!miss.includes(cell)){//проверка на повторые ходы
+        miss.push(cell)
+        return{type:"MISS", payload:miss}}
+            else{return{type:"MESSAGE", payload:"there’s still nothing there"}}}
+ }
+
+
+let checkdestroyed = (pos)=>{//фунция для метода every 
+    return wound.includes(pos)
+}
 
 

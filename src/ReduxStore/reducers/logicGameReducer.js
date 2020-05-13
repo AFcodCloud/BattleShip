@@ -1,9 +1,9 @@
 
 let initialState={
     play:false,
-    fleet:[],
-    hit:[],
-    miss:[],
+    destroyed:[2],
+    wound:[2],
+    miss:[3],
     message:"press start to enter to battle",
     shootsCounter:0
   }
@@ -12,29 +12,34 @@ let initialState={
   const logicGameReducer = (state=initialState, action) =>{
        switch (action.type){
          case "START_GAME":
-            return {...state, play:true, fleet:action.fleet, message:"go"}                     
+            return {...state, play:true, message:"go"}                     
          case "STOP":
-            return {...state, play:false, fleet:[],
-                hit:[], miss:[], 
+            return {...state, play:false, destroyed:[],
+                wound:[], miss:[], 
                 message:"press start to enter to battle", shootsCounter:0}                     
          case "MESSAGE":
             if(state.play){
              return {...state, message:action.payload}
             }else {return state }
-         case "HIT":
+         case "WOUND":
              if(state.play){
-             return {...state, hit:[...state.hit, action.payload], 
-                     message:"hit", shootsCounter:state.shootsCounter+1}
+             return {...state, wound:[...action.payload], 
+                     message:"wound!!!", shootsCounter:state.shootsCounter+1}
+                    }else {return state }
+         case "DESTROYED":
+             if(state.play){
+             return {...state, destroyed:[...action.payload], 
+                     message:"destroyed!!!", shootsCounter:state.shootsCounter+1}
                     }else {return state }
                     
          case "MISS":
             if(state.play){
-             return {...state, miss:[...state.miss, action.payload], 
-                     message:"miss", shootsCounter:state.shootsCounter+1}
+             return {...state, miss:[...action.payload], 
+                     message:"miss...", shootsCounter:state.shootsCounter+1}
                     }else{return state}
                     
          case "WIN":
-             return {...state, hit:[...state.hit, action.payload], 
+             return {...state, destroyed:[...action.payload], 
                      message:`you won in ${state.shootsCounter+1} moves`, play:false}
                                       
         default: return state;}
@@ -42,8 +47,8 @@ let initialState={
   
   //ActionCreators////////////////////////
   
-    export  const startGame = (fleet) =>{
-      return{type:"START_GAME", fleet}
+    export  const startGame = () =>{
+      return{type:"START_GAME"}
     };
     export const shoot = ({type, payload}) =>{
         return{type, payload}

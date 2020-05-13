@@ -9,29 +9,30 @@ body{
     border:1px solid black;
 }
 table{
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height: 300px;
 }
 
-tbody{
-    width: 500px;
-    height: 500px;
+tr{
+    width: 100px;
 }
- tr{
-      width: 50px;
-      height: 50px;
-}
+
 
 td{
     border: 1px solid white;
-    width: 50px;
-    height: 50px;
 }
-.hit{
-    transition: all 1s ease;
-    background-color: red;
-}
+
+
 .miss{
     transition: all 1s ease; 
     background-color: blue;
+}
+
+.wound{
+    transition: all 1s ease; 
+    background-color: orangered;
+}
+.destroyed{
+    transition: all 1s ease;
+    background-color: red;
 }
